@@ -12,23 +12,24 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user_attempts")
 @Getter
+@Setter
 @NoArgsConstructor
 public class UserAttempts {
 
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Setter
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Setter
     @Column(name = "attempts")
     private Integer attempts;
+
+    @Column(name = "all_attempts_timestamps")
+    private String allAttemptsTimestamps;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -37,8 +38,5 @@ public class UserAttempts {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-    @Version
-    private Long version;
 
 }

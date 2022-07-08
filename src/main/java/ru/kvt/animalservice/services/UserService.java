@@ -11,4 +11,6 @@ public interface UserService extends UserDetailsService {
 
     void createUser(String username, String password);
 
+    Boolean checkName(String username);
+
 }

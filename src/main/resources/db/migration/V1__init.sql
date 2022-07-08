@@ -10,12 +10,12 @@ create table users
 
 create table user_attempts
 (
-    id         bigserial,
-    user_id    bigint references users (id),
-    attempts   int,
-    created_at timestamp default current_timestamp,
-    updated_at timestamp default current_timestamp,
-    version    bigint,
+    id                      bigserial,
+    user_id                 bigint references users (id),
+    attempts                int,
+    all_attempts_timestamps varchar(1000),
+    created_at              timestamp default current_timestamp,
+    updated_at              timestamp default current_timestamp,
     primary key (id)
 );
 

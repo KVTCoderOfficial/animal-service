@@ -1,10 +1,12 @@
 package ru.kvt.animalservice.mappers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import ru.kvt.animalservice.dto.AnimalDto;
-import ru.kvt.animalservice.dto.AnimalToSaveDto;
-import ru.kvt.animalservice.dto.AnimalToUpdateDto;
+import ru.kvt.animalservice.dto.animal.AnimalDto;
+import ru.kvt.animalservice.dto.animal.AnimalPageDto;
+import ru.kvt.animalservice.dto.animal.AnimalToSaveDto;
+import ru.kvt.animalservice.dto.animal.AnimalToUpdateDto;
 import ru.kvt.animalservice.exceptions.CurrentUsersAnimalNotFoundException;
 import ru.kvt.animalservice.exceptions.SpeciesNotFoundException;
 import ru.kvt.animalservice.exceptions.UserNotFoundException;
@@ -61,6 +63,16 @@ public class AnimalMapper {
             animal.setBirthday(animalToUpdateDto.getBirthday());
         }
         return animal;
+    }
+
+    public AnimalPageDto toAnimalPageDto(Page<AnimalDto> animalDtoPage) {
+        AnimalPageDto animalPageDto = new AnimalPageDto();
+        animalPageDto.setContent(animalDtoPage.getContent());
+        animalPageDto.setTotalPages(animalDtoPage.getTotalPages());
+        animalPageDto.setTotalElements(animalDtoPage.getTotalElements());
+        animalPageDto.setPageSize(animalDtoPage.getSize());
+        animalPageDto.setPageNumber(animalDtoPage.getNumber() + 1);
+        return animalPageDto;
     }
 
 }

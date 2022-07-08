@@ -35,11 +35,22 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
+    @Override
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Transactional
+    @Override
+    public Boolean checkName(String username) {
+        if (findUserByUsername(username).isPresent()) {
+            throw new UserAlreadyExistsException("User already exists");
+        }
+        return true;
+    }
+
+    @Transactional
+    @Override
     public void createUser(String username, String password) {
         findUserByUsername(username).ifPresent(user -> {
             throw new UserAlreadyExistsException("User already exists");
@@ -50,15 +61,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(List.of(role));
         userRepository.save(user);
-
         UserAttempts userAttempts = new UserAttempts();
         userAttempts.setUser(user);
         userAttempts.setAttempts(0);
+        userAttempts.setAllAttemptsTimestamps("");
         userAttemptsRepository.save(userAttempts);
     }
 
-    @Override
     @Transactional
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));

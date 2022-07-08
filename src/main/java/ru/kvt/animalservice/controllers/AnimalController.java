@@ -5,9 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.kvt.animalservice.dto.AnimalDto;
-import ru.kvt.animalservice.dto.AnimalToSaveDto;
-import ru.kvt.animalservice.dto.AnimalToUpdateDto;
+import ru.kvt.animalservice.dto.animal.AnimalDto;
+import ru.kvt.animalservice.dto.animal.AnimalPageDto;
+import ru.kvt.animalservice.dto.animal.AnimalToSaveDto;
+import ru.kvt.animalservice.dto.animal.AnimalToUpdateDto;
 import ru.kvt.animalservice.exceptions.AnimalNotFoundException;
 import ru.kvt.animalservice.mappers.AnimalMapper;
 import ru.kvt.animalservice.model.animal.Animal;
@@ -27,11 +28,12 @@ public class AnimalController {
     private final AnimalMapper animalMapper;
 
     @GetMapping("/current-user-animals")
-    public Page<AnimalDto> findCurrentUserAnimals(Principal principal, @RequestParam(defaultValue = "1") Integer page) {
+    public AnimalPageDto findCurrentUserAnimals(Principal principal, @RequestParam(defaultValue = "1") Integer page) {
         if (page < 1) {
             page = 1;
         }
-        return animalService.findAllByUsername(principal.getName(), page, 4).map(animalMapper::toAnimalDto);
+        Page<AnimalDto> animalDtoPage = animalService.findAllByUsername(principal.getName(), page, 4).map(animalMapper::toAnimalDto);
+        return animalMapper.toAnimalPageDto(animalDtoPage);
     }
 
     @GetMapping("/{id}")

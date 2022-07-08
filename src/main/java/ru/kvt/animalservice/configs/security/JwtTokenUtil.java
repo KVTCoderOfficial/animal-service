@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    @Value("${animal-service.jwt.secret}")
+    private String jwtSecret;
 
-    @Value("${jwt.lifetime}")
+    @Value("${animal-service.jwt.lifetime}")
     private Integer jwtLifetime;
 
     public String generateToken(UserDetails userDetails) {
@@ -30,7 +30,6 @@ public class JwtTokenUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("roles", rolesList);
-
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);
         return Jwts.builder()
@@ -38,7 +37,7 @@ public class JwtTokenUtil {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(issuedDate)
                 .setExpiration(expiredDate)
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
@@ -57,7 +56,7 @@ public class JwtTokenUtil {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
     }

@@ -7,6 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,6 +36,9 @@ public class ExceptionsHandler {
 
         if (exception instanceof HttpMessageNotReadableException)
             return process(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_REQUEST_PARAMS);
+
+        if (exception instanceof HttpRequestMethodNotSupportedException)
+            return process(HttpStatus.BAD_REQUEST, ErrorMessage.INVALID_REQUEST);
 
         if (exception instanceof BadCredentialsException)
             return process(HttpStatus.UNAUTHORIZED, ErrorMessage.INCORRECT_CREDENTIALS);

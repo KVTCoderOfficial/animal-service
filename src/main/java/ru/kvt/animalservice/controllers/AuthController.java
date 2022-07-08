@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.kvt.animalservice.configs.security.JwtTokenUtil;
 import ru.kvt.animalservice.dto.jwt.JwtRequestDto;
 import ru.kvt.animalservice.dto.jwt.JwtResponseDto;
-import ru.kvt.animalservice.exceptions.UserAlreadyExistsException;
 import ru.kvt.animalservice.services.AuthService;
 import ru.kvt.animalservice.services.UserService;
 
@@ -45,11 +44,8 @@ public class AuthController {
 
     @GetMapping("/api/v1/check-username")
     @ResponseStatus(HttpStatus.OK)
-    public String checkName(@RequestParam String username) {
-        if (userService.findUserByUsername(username).isPresent()) {
-            throw new UserAlreadyExistsException("User already exists");
-        }
-        return username;
+    public Boolean checkName(@RequestParam String username) {
+        return userService.checkName(username);
     }
 
 }

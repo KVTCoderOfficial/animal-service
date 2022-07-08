@@ -1,4 +1,4 @@
-package ru.kvt.animalservice.dto;
+package ru.kvt.animalservice.dto.animal;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
