@@ -51,14 +51,18 @@ JWT_SECRET=(секретное слово для JWT-токена) - обяза�
 
 JWT_LIFETIME=(время жизни JWT-токена в миллисекундах) - необязательный параметр, по умолчанию равен 3600000 (1 час)
 
+AUTH_ATTEMPTS_LIMIT=(количество допустимых попыток для авторизации) - необязательный параметр, по умолчанию равен 10
+
+AUTH_ATTEMPTS_LIMIT_TIME_FRAME=(предел по времени для попыток авторизации) - необязательный параметр, по умолчанию равен 3600000 (1 час)
+
 При использовании консоли, зайдите в папку с файлом animal-service-0.0.1-SNAPSHOT.jar и выполните команду
 
 java -jar -DDB_URL=(адрес вашей базы данных PostgreSQL) -DDB_USERNAME=(логин вашей базы данных PostgreSQL) -DDB_PASSWORD=(пароль вашей базы данных PostgreSQL) -DJWT_SECRET=(секретное слово для JWT-токена) animal-service-0.0.1-SNAPSHOT.jar
 
 Со всеми параметрами:
 
-java -jar -DDB_URL=(адрес вашей базы данных PostgreSQL) -DDB_USERNAME=(логин вашей базы данных PostgreSQL) -DDB_PASSWORD=(пароль вашей базы данных PostgreSQL) -DJWT_SECRET=(секретное слово для JWT-токена) -DJWT_LIFETIME=(время жизни JWT-токена в миллисекундах) animal-service-0.0.1-SNAPSHOT.jar
+java -jar -DDB_URL=(адрес вашей базы данных PostgreSQL) -DDB_USERNAME=(логин вашей базы данных PostgreSQL) -DDB_PASSWORD=(пароль вашей базы данных PostgreSQL) -DJWT_SECRET=(секретное слово для JWT-токена) -DJWT_LIFETIME=(время жизни JWT-токена в миллисекундах) -DAUTH_ATTEMPTS_LIMIT=(количество допустимых попыток для авторизации) -DAUTH_ATTEMPTS_LIMIT_TIME_FRAME=(предел по времени для попыток авторизации) animal-service-0.0.1-SNAPSHOT.jar
 
 Пример:
 
-java -jar -DDB_URL=jdbc:postgresql://localhost:5432/postgres?currentSchema=animal_service -DDB_USERNAME=postgres -DDB_PASSWORD=postgres -DJWT_SECRET=secret -DJWT_LIFETIME=3600000 animal-service-0.0.1-SNAPSHOT.jar
+java -jar -DDB_URL=jdbc:postgresql://localhost:5432/postgres?currentSchema=animal_service -DDB_USERNAME=postgres -DDB_PASSWORD=postgres -DJWT_SECRET=secret -DJWT_LIFETIME=3600000 -DAUTH_ATTEMPTS_LIMIT=10 -DAUTH_ATTEMPTS_LIMIT_TIME_FRAME=3600000 animal-service-0.0.1-SNAPSHOT.jar
